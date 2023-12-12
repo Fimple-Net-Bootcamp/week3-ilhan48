@@ -9,15 +9,21 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastru
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentation", "Presentation", "{2AA8B76D-BFC1-4774-AA01-C4ADD8FE8569}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Week3.Domain", "Core\Week3.Domain\Week3.Domain.csproj", "{FDEB8657-90F0-4F1D-9757-FA9EC4A2E321}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Week3.Domain", "Core\Week3.Domain\Week3.Domain.csproj", "{FDEB8657-90F0-4F1D-9757-FA9EC4A2E321}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Week3.Application", "Core\Week3.Application\Week3.Application.csproj", "{E8BB446D-B309-4246-8DF5-327920F7B548}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Week3.Application", "Core\Week3.Application\Week3.Application.csproj", "{E8BB446D-B309-4246-8DF5-327920F7B548}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Week3.Infrastructure", "Infrastructure\Week3.Infrastructure\Week3.Infrastructure.csproj", "{A96B25B1-4FB3-4897-A9BD-F5212AAE6124}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Week3.Infrastructure", "Infrastructure\Week3.Infrastructure\Week3.Infrastructure.csproj", "{A96B25B1-4FB3-4897-A9BD-F5212AAE6124}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Week3.Persistence", "Infrastructure\Week3.Persistence\Week3.Persistence.csproj", "{6162FF82-9E5E-4F56-8D65-9AA10B2C60EF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Week3.Persistence", "Infrastructure\Week3.Persistence\Week3.Persistence.csproj", "{6162FF82-9E5E-4F56-8D65-9AA10B2C60EF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Week3.API", "Presentation\Week3.API\Week3.API.csproj", "{B61DFC50-FF30-4594-8B7F-CEEC933AA22E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Week3.API", "Presentation\Week3.API\Week3.API.csproj", "{B61DFC50-FF30-4594-8B7F-CEEC933AA22E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{58B4D52F-A54E-4494-ACB3-2FFB5F237226}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Common.Persistence", "Common\Common.Persistence\Common.Persistence.csproj", "{838E0C3D-EB4B-46BC-A32F-0D148574746A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common.Utilities", "Common\Common.Utilities\Common.Utilities.csproj", "{3764A4A9-0759-42A1-8806-9263B2A3259C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +51,14 @@ Global
 		{B61DFC50-FF30-4594-8B7F-CEEC933AA22E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B61DFC50-FF30-4594-8B7F-CEEC933AA22E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B61DFC50-FF30-4594-8B7F-CEEC933AA22E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{838E0C3D-EB4B-46BC-A32F-0D148574746A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{838E0C3D-EB4B-46BC-A32F-0D148574746A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{838E0C3D-EB4B-46BC-A32F-0D148574746A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{838E0C3D-EB4B-46BC-A32F-0D148574746A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3764A4A9-0759-42A1-8806-9263B2A3259C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3764A4A9-0759-42A1-8806-9263B2A3259C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3764A4A9-0759-42A1-8806-9263B2A3259C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3764A4A9-0759-42A1-8806-9263B2A3259C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -55,6 +69,8 @@ Global
 		{A96B25B1-4FB3-4897-A9BD-F5212AAE6124} = {46ACB61A-05F9-4D85-94A2-60D209AED697}
 		{6162FF82-9E5E-4F56-8D65-9AA10B2C60EF} = {46ACB61A-05F9-4D85-94A2-60D209AED697}
 		{B61DFC50-FF30-4594-8B7F-CEEC933AA22E} = {2AA8B76D-BFC1-4774-AA01-C4ADD8FE8569}
+		{838E0C3D-EB4B-46BC-A32F-0D148574746A} = {58B4D52F-A54E-4494-ACB3-2FFB5F237226}
+		{3764A4A9-0759-42A1-8806-9263B2A3259C} = {58B4D52F-A54E-4494-ACB3-2FFB5F237226}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B0FB0217-3C90-428F-9FE0-1EBC431C1240}

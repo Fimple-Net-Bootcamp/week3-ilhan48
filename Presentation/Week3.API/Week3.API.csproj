@@ -12,10 +12,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\..\Core\Week3.Application\Week3.Application.csproj" />
     <ProjectReference Include="..\..\Infrastructure\Week3.Persistence\Week3.Persistence.csproj" />
   </ItemGroup>
