@@ -18,6 +18,7 @@ public static class PersistenceServiceRegistration
         services.AddScoped<IPetRepository, PetRepository>();
         services.AddScoped<IHealthStatusRepository, HealthStatusRepository>();
         services.AddScoped<IActivityRepository, ActivityRepository>();
+        services.AddScoped<IFoodRepository, FoodRepository>();
 
         return services;
         

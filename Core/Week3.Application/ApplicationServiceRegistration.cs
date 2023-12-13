@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Week3.Application.Services.ActivityService;
+using Week3.Application.Services.FoodService;
 using Week3.Application.Services.HealthStatusService;
 using Week3.Application.Services.PetService;
 using Week3.Application.Services.UserService;
@@ -14,6 +15,7 @@ public static class ApplicationServiceRegistration
         services.AddScoped<IPetService, PetService>();
         services.AddScoped<IHealthStatusService, HealthStatusService>();
         services.AddScoped<IActivityService, ActivityService>();
+        services.AddScoped<IFoodService, FoodService>();
         return services;
     }
 }
