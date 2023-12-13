@@ -4,7 +4,7 @@ using Week3.Application.Services.PetService;
 
 namespace Week3.API.Controllers;
 
-[Route("api/[controller]")]
+[Route("api/v1/[controller]")]
 [ApiController]
 public class PetsController : ControllerBase
 {
@@ -17,7 +17,7 @@ public class PetsController : ControllerBase
     [HttpPost]
     public IActionResult Add(PetAddDto petAddDto)
     {
-        var petExists = _petService.Add(petAddDto);
+        _petService.Add(petAddDto);
         return Created("", petAddDto);
     }
     [HttpGet]
