@@ -15,6 +15,7 @@ public static class PersistenceServiceRegistration
             options => options.UseNpgsql(configuration.GetConnectionString("Default")));
 
         services.AddScoped<IUserRepository, UserRepository>();
+        services.AddScoped<IPetRepository, PetRepository>();
 
         return services;
         

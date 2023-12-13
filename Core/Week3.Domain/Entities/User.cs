@@ -1,6 +1,6 @@
 ﻿using Common.Persistence.Repositories;
 
-namespace Week3.Domain;
+namespace Week3.Domain.Entities;
 
 public class User : BaseEntity<Guid>
 {
@@ -11,6 +11,8 @@ public class User : BaseEntity<Guid>
     public byte[] PasswordHash { get; set; }
     public bool Status { get; set; }
 
+    public virtual ICollection<Pet> Pets { get; set; }
+
     public User()
     {
         FirstName = string.Empty;
@@ -18,6 +20,7 @@ public class User : BaseEntity<Guid>
         Email = string.Empty;
         PasswordHash = Array.Empty<byte>();
         PasswordSalt = Array.Empty<byte>();
+        Pets = new HashSet<Pet>();
     }
 
     public User(

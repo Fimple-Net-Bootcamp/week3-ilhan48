@@ -16,11 +16,24 @@ public abstract class EfRepositoryBase<TEntity, TEntityId, TContext> : IAsyncRep
     }
 
     public IQueryable<TEntity> Query() => Context.Set<TEntity>();
+    public TEntity Add(TEntity entity)
+    {
+        entity.CreatedDate = DateTime.UtcNow;
+        Context.Add(entity);
+        Context.SaveChanges();
+        return entity;
+    }
     public async Task<TEntity> AddAsync(TEntity entity)
     {
         entity.CreatedDate = DateTime.UtcNow;
         await Context.AddAsync(entity);
         await Context.SaveChangesAsync();
+        return entity;
+    }
+    public TEntity Update(TEntity entity)
+    {
+        Context.Update(entity);
+        Context.SaveChanges();
         return entity;
     }
     public TEntity? Get(

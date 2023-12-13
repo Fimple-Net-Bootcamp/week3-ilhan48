@@ -1,8 +1,9 @@
-﻿using Common.Utilities.Paging;
+﻿using Common.Utilities.Hashing;
+using Common.Utilities.Paging;
 using Common.Utilities.Results;
 using Week3.Application.DTOs;
 using Week3.Application.Services.Repositories;
-using Week3.Domain;
+using Week3.Domain.Entities;
 
 namespace Week3.Application.Services.UserService;
 
@@ -14,9 +15,21 @@ public class UserService : IUserService
         _userRepository = userRepository;
     }
 
-    public Task<CreateUser> CreateAsync(CreateUser model)
+    public IResult Add(UserForAddDto userForAddDto, string password)
     {
-        throw new NotImplementedException();
+        byte[] passwordHash, passwordSalt;
+        HashingHelper.CreatePasswordHash(password, out passwordHash, out passwordSalt);
+        var user = new User
+        {
+            Email = userForAddDto.Email,
+            FirstName = userForAddDto.FirstName,
+            LastName = userForAddDto.LastName,
+            PasswordHash = passwordHash,
+            PasswordSalt = passwordSalt,
+            Status = true
+        };
+        _userRepository.Add(user);
+        return new SuccessDataResult<User>(user, "User Registered");
     }
 
     public IDataResult<PagedList<User>> GetAll(bool status, string sortOrder, int page = 1, int size = 10)
@@ -46,11 +59,25 @@ public class UserService : IUserService
 
         return new SuccessDataResult<PagedList<User>>(pagedUsers);
     }
-
-    public Task<User> GetById(Guid id)
+    public IResult UserExists(string email)
     {
-        throw new NotImplementedException();
+
+        if (GetByMail(email).Data != null)
+        {
+            return new ErrorResult("User Already Exists");
+        }
+        return new SuccessResult();
     }
+
+    public IDataResult<User> GetById(Guid id)
+    {
+        return new SuccessDataResult<User>(_userRepository.Get(u => u.Id == id));
+    }
+    public IDataResult<User> GetByMail(string email)
+    {
+        return new SuccessDataResult<User>(_userRepository.Get(u => u.Email == email));
+    }
+
 }
 
 

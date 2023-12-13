@@ -1,8 +1,7 @@
 ﻿using Week3.Application.Services.Repositories;
-using Week3.Domain;
 using Week3.Persistence.Context;
 using Common.Persistence.Repositories;
-using Week3.Application.DTOs;
+using Week3.Domain.Entities;
 
 namespace Week3.Persistence.Repositories;
 

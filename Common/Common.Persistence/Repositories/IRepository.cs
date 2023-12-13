@@ -6,6 +6,8 @@ namespace Common.Persistence.Repositories;
 public interface IRepository<TEntity, TEntityId> : IQuery<TEntity>
     where TEntity : BaseEntity<TEntityId>
 {
+    TEntity Add(TEntity entity);
+    TEntity Update(TEntity entity);
     TEntity? Get(
         Expression<Func<TEntity, bool>> predicate,
         Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>? include = null,

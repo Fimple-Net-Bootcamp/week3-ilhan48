@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Common.Utilities.Results;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Week3.Application.DTOs;
 using Week3.Application.Services.UserService;
@@ -15,6 +16,18 @@ public class UsersController : ControllerBase
     {
         _userService = userService;
     }
+
+    [HttpPost]
+    public IActionResult Add(UserForAddDto userForAddDto)
+    {
+        var userExists = _userService.UserExists(userForAddDto.Email);
+        if (!userExists.Success)
+        {
+            return BadRequest(userExists.Message);
+        }
+        var userAdd = _userService.Add(userForAddDto, userForAddDto.Password);
+        return Created("", userForAddDto);
+    }
     [HttpGet]
     public async Task<IActionResult> GetAll([FromQuery] bool status, string sortOrder, int page = 1, int size = 10)
     {
@@ -29,7 +42,22 @@ public class UsersController : ControllerBase
     [HttpGet("{Id}")]
     public async Task<IActionResult> GetById(Guid id)
     {
-        var result = await _userService.GetById(id);
-        return Ok(result);
+        var result = _userService.GetById(id);
+        if (result.Success)
+        {
+            return Ok(result);
+        }
+        return BadRequest(result);
+    }
+
+    [HttpGet("getbymail/{email}")]
+    public IActionResult GeyByMail(string email)
+    {
+        var result = _userService.GetByMail(email);
+        if (result.Success)
+        {
+            return Ok(result);
+        }
+        return BadRequest(result);
     }
 }
