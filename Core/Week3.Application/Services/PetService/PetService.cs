@@ -59,7 +59,7 @@ public class PetService : IPetService
 
     public IDataResult<Pet> GetById(int id)
     {
-        throw new NotImplementedException();
+        return new SuccessDataResult<Pet>(_petRepository.Get(p => p.Id == id));
     }
 
     public IResult Update(PetUpdateDto petUpdateDto)

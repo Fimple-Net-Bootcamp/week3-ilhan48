@@ -17,7 +17,18 @@ public class FoodsController : ControllerBase
     public async Task<IActionResult> Add(FoodAddDto foodAddDto)
     {
         _foodService.Add(foodAddDto);
-        return Created("", foodAddDto);
+        return Created("" ,foodAddDto);
+    }
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetById(int id)
+    {
+        var result = _foodService.GetById(id);
+        if (result.Success)
+        {
+            return Ok(result);
+        }
+        return BadRequest(result);
+
     }
     [HttpGet]
     public async Task<IActionResult> GetAll([FromQuery] string filter, string sortBy, string sortOrder, int page = 1, int size = 10)

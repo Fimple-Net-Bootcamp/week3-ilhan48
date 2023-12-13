@@ -51,4 +51,9 @@ public class FoodService : IFoodService
 
         return new SuccessDataResult<PagedList<Food>>(pagedUsers);
     }
+
+    public IDataResult<Food> GetById(int id)
+    {
+        return new SuccessDataResult<Food>(_foodRepository.Get(f => f.Id == id));
+    }
 }
