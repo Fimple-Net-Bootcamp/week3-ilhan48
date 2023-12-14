@@ -8,7 +8,7 @@ namespace Week3.Application.Services.UserService;
 public interface IUserService
 {
     IResult Add(UserForAddDto userForAddDto, string password);
-    IDataResult<PagedList<User>> GetAll(bool status, string sortOrder, int page = 1, int size = 10);
+    IDataResult<PagedList<User>> GetAll(bool status, string sortBy, string sortOrder, int page = 1, int size = 10);
     IResult UserExists(string email);
     IDataResult<User> GetById(Guid id);
     IDataResult<User> GetByMail(string email);

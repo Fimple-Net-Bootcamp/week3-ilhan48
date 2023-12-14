@@ -15,9 +15,9 @@ public class HealthStatusesController : ControllerBase
         _healthStatusService = healthStatusService;
     }
     [HttpGet]
-    public async Task<IActionResult> GetAll([FromQuery] string filter, string sortOrder, int page = 1, int size = 10)
+    public async Task<IActionResult> GetAll([FromQuery] string sortBy, string sortOrder, int page = 1, int size = 10)
     {
-        var result = _healthStatusService.GetAll(filter, sortOrder, page, size);
+        var result = _healthStatusService.GetAll(sortBy, sortOrder, page, size);
         if (result.Success)
         {
             return Ok(result);

@@ -1,5 +1,6 @@
 ﻿using Common.Utilities.Paging;
 using Common.Utilities.Results;
+using System.Linq.Expressions;
 using Week3.Application.DTOs;
 using Week3.Application.Services.Repositories;
 using Week3.Domain.Entities;
@@ -29,7 +30,7 @@ public class PetService : IPetService
         return new SuccessResult();
     }
 
-    public IDataResult<PagedList<Pet>> GetAll(string filterParam, string sortOrder, int page, int size)
+    public IDataResult<PagedList<Pet>> GetAll(string sortBy, string sortOrder, int page, int size)
     {
         var pets = _petRepository.GetAll();
         pets = pets.Where(item => item.DeletedDate == null).ToList();
@@ -39,23 +40,46 @@ public class PetService : IPetService
             return new ErrorDataResult<PagedList<Pet>>("No Matching Content");
         }
 
-        if (string.IsNullOrEmpty(sortOrder) || sortOrder.ToLower() == "asc")
+        if (!string.IsNullOrEmpty(sortBy) && typeof(Pet).GetProperty(sortBy) != null)
         {
-            pets = pets.OrderBy(item => item.Name).ToList();
-        }
-        else if (sortOrder.ToLower() == "desc")
-        {
-            pets = pets.OrderByDescending(item => item.Name).ToList();
+            var parameter = Expression.Parameter(typeof(Pet), "x");
+            var property = Expression.Property(parameter, sortBy);
+            var lambda = Expression.Lambda<Func<Pet, object>>(Expression.Convert(property, typeof(object)), parameter);
+
+            if (string.IsNullOrEmpty(sortOrder) || sortOrder.ToLower() == "asc")
+            {
+                pets = pets.OrderBy(lambda.Compile()).ToList();
+            }
+            else if (sortOrder.ToLower() == "desc")
+            {
+                pets = pets.OrderByDescending(lambda.Compile()).ToList();
+            }
+            else
+            {
+                pets = pets.OrderBy(lambda.Compile()).ToList();
+            }
         }
         else
         {
-            pets = pets.OrderBy(item => item.Name).ToList();
+            if (string.IsNullOrEmpty(sortOrder) || sortOrder.ToLower() == "asc")
+            {
+                pets = pets.OrderBy(item => item.Name).ToList();
+            }
+            else if (sortOrder.ToLower() == "desc")
+            {
+                pets = pets.OrderByDescending(item => item.Name).ToList();
+            }
+            else
+            {
+                pets = pets.OrderBy(item => item.Name).ToList();
+            }
         }
 
         var pagedUsers = PagedList<Pet>.Create(pets, page, size);
 
         return new SuccessDataResult<PagedList<Pet>>(pagedUsers);
     }
+
 
     public IDataResult<Pet> GetById(int id)
     {

@@ -1,5 +1,6 @@
 ﻿using Common.Utilities.Paging;
 using Common.Utilities.Results;
+using System.Linq.Expressions;
 using Week3.Application.DTOs;
 using Week3.Application.Services.Repositories;
 using Week3.Domain.Entities;
@@ -13,7 +14,7 @@ public class HealthStatusService : IHealthStatusService
     {
         _healthStatusRepository = healthStatusRepository;
     }
-    public IDataResult<PagedList<HealthStatus>> GetAll(string filterParam, string sortOrder, int page, int size)
+    public IDataResult<PagedList<HealthStatus>> GetAll(string sortBy, string sortOrder, int page, int size)
     {
         var healthStatuses = _healthStatusRepository.GetAll();
         healthStatuses = healthStatuses.Where(item => item.DeletedDate == null).ToList();
@@ -23,23 +24,46 @@ public class HealthStatusService : IHealthStatusService
             return new ErrorDataResult<PagedList<HealthStatus>>("No Matching Content");
         }
 
-        if (string.IsNullOrEmpty(sortOrder) || sortOrder.ToLower() == "asc")
+        if (!string.IsNullOrEmpty(sortBy) && typeof(HealthStatus).GetProperty(sortBy) != null)
         {
-            healthStatuses = healthStatuses.OrderBy(item => item.CreatedDate).ToList();
-        }
-        else if (sortOrder.ToLower() == "desc")
-        {
-            healthStatuses = healthStatuses.OrderByDescending(item => item.CreatedDate).ToList();
+            var parameter = Expression.Parameter(typeof(HealthStatus), "x");
+            var property = Expression.Property(parameter, sortBy);
+            var lambda = Expression.Lambda<Func<HealthStatus, object>>(Expression.Convert(property, typeof(object)), parameter);
+
+            if (string.IsNullOrEmpty(sortOrder) || sortOrder.ToLower() == "asc")
+            {
+                healthStatuses = healthStatuses.OrderBy(lambda.Compile()).ToList();
+            }
+            else if (sortOrder.ToLower() == "desc")
+            {
+                healthStatuses = healthStatuses.OrderByDescending(lambda.Compile()).ToList();
+            }
+            else
+            {
+                healthStatuses = healthStatuses.OrderBy(lambda.Compile()).ToList();
+            }
         }
         else
         {
-            healthStatuses = healthStatuses.OrderBy(item => item.CreatedDate).ToList();
+            if (string.IsNullOrEmpty(sortOrder) || sortOrder.ToLower() == "asc")
+            {
+                healthStatuses = healthStatuses.OrderBy(item => item.CreatedDate).ToList();
+            }
+            else if (sortOrder.ToLower() == "desc")
+            {
+                healthStatuses = healthStatuses.OrderByDescending(item => item.CreatedDate).ToList();
+            }
+            else
+            {
+                healthStatuses = healthStatuses.OrderBy(item => item.CreatedDate).ToList();
+            }
         }
 
         var pagedHealthStatuses = PagedList<HealthStatus>.Create(healthStatuses, page, size);
 
         return new SuccessDataResult<PagedList<HealthStatus>>(pagedHealthStatuses);
     }
+
 
     public IDataResult<HealthStatus> GetById(int id)
     {

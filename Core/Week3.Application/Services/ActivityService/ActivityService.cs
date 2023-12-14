@@ -1,5 +1,6 @@
 ﻿using Common.Utilities.Paging;
 using Common.Utilities.Results;
+using System.Linq.Expressions;
 using Week3.Application.DTOs;
 using Week3.Application.Services.Repositories;
 using Week3.Domain.Entities;
@@ -31,22 +32,47 @@ public class ActivityService : IActivityService
     {
         var activitiesForPet = _activityRepository.GetAll();
         activitiesForPet = activitiesForPet.Where(pa => pa.Id == petId).ToList();
-        if (activitiesForPet.Any())
+
+        if (!activitiesForPet.Any())
         {
             return new ErrorDataResult<PagedList<Activity>>("No Matching Content");
         }
-        if (string.IsNullOrEmpty(sortOrder) || sortOrder.ToLower() == "asc")
+
+        if (!string.IsNullOrEmpty(sortBy) && typeof(Activity).GetProperty(sortBy) != null)
         {
-            activitiesForPet = activitiesForPet.OrderBy(activitiesForPet => activitiesForPet.Name).ToList();
-        }
-        else if (sortOrder.ToLower() == "desc")
-        {
-            activitiesForPet = activitiesForPet.OrderByDescending(activitiesForPet => activitiesForPet.Name).ToList();
+            var parameter = Expression.Parameter(typeof(Activity), "x");
+            var property = Expression.Property(parameter, sortBy);
+            var lambda = Expression.Lambda<Func<Activity, object>>(Expression.Convert(property, typeof(object)), parameter);
+
+            if (string.IsNullOrEmpty(sortOrder) || sortOrder.ToLower() == "asc")
+            {
+                activitiesForPet = activitiesForPet.OrderBy(lambda.Compile()).ToList();
+            }
+            else if (sortOrder.ToLower() == "desc")
+            {
+                activitiesForPet = activitiesForPet.OrderByDescending(lambda.Compile()).ToList();
+            }
+            else
+            {
+                activitiesForPet = activitiesForPet.OrderBy(lambda.Compile()).ToList();
+            }
         }
         else
         {
-            activitiesForPet = activitiesForPet.OrderBy(activitiesForPet => activitiesForPet.Name).ToList();
+            if (string.IsNullOrEmpty(sortOrder) || sortOrder.ToLower() == "asc")
+            {
+                activitiesForPet = activitiesForPet.OrderBy(pa => pa.Name).ToList();
+            }
+            else if (sortOrder.ToLower() == "desc")
+            {
+                activitiesForPet = activitiesForPet.OrderByDescending(pa => pa.Name).ToList();
+            }
+            else
+            {
+                activitiesForPet = activitiesForPet.OrderBy(pa => pa.Name).ToList();
+            }
         }
+
         var pagedActivities = PagedList<Activity>.Create(activitiesForPet, page, size);
         return new SuccessDataResult<PagedList<Activity>>(pagedActivities);
     }

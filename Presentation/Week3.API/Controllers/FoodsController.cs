@@ -31,9 +31,9 @@ public class FoodsController : ControllerBase
 
     }
     [HttpGet]
-    public async Task<IActionResult> GetAll([FromQuery] string filter, string sortBy, string sortOrder, int page = 1, int size = 10)
+    public async Task<IActionResult> GetAll([FromQuery] string sortBy, string sortOrder, int page = 1, int size = 10)
     {
-        var result = _foodService.GetAll(filter, sortOrder, page, size);
+        var result = _foodService.GetAll(sortBy, sortOrder, page, size);
         if (result.Success)
         {
             return Ok(result);

@@ -7,7 +7,7 @@ namespace Week3.Application.Services.HealthStatusService;
 
 public interface IHealthStatusService
 {
-    IDataResult<PagedList<HealthStatus>> GetAll(string filterParam, string sortOrder, int page, int size);
+    IDataResult<PagedList<HealthStatus>> GetAll(string sortBy, string sortOrder, int page, int size);
     IResult Update(HealthStatusUpdateDto healthStatusUpdateDto);
     IDataResult<HealthStatus> GetById(int id);
 }

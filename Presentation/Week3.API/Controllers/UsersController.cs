@@ -29,9 +29,9 @@ public class UsersController : ControllerBase
         return Created("", userForAddDto);
     }
     [HttpGet]
-    public async Task<IActionResult> GetAll([FromQuery] bool status, string sortOrder, int page = 1, int size = 10)
+    public async Task<IActionResult> GetAll([FromQuery] bool status, string sortBy, string sortOrder, int page = 1, int size = 10)
     {
-        var result = _userService.GetAll(status, sortOrder, page, size);
+        var result = _userService.GetAll(status, sortBy, sortOrder, page, size);
         if (result.Success)
         {
             return Ok(result);

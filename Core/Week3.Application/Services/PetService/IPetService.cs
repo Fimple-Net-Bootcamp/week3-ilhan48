@@ -7,7 +7,7 @@ namespace Week3.Application.Services.PetService;
 
 public interface IPetService
 {
-    IDataResult<PagedList<Pet>> GetAll(string filterParam, string sortOrder, int page, int size);
+    IDataResult<PagedList<Pet>> GetAll(string sortBy, string sortOrder, int page, int size);
     IDataResult<Pet> GetById(int id);
     IResult Add(PetAddDto petAddDto);
     IResult Update(PetUpdateDto petUpdateDto);

@@ -1,6 +1,7 @@
 ﻿using Common.Utilities.Hashing;
 using Common.Utilities.Paging;
 using Common.Utilities.Results;
+using System.Linq.Expressions;
 using Week3.Application.DTOs;
 using Week3.Application.Services.Repositories;
 using Week3.Domain.Entities;
@@ -32,9 +33,9 @@ public class UserService : IUserService
         return new SuccessDataResult<User>(user, "User Registered");
     }
 
-    public IDataResult<PagedList<User>> GetAll(bool status, string sortOrder, int page = 1, int size = 10)
+    public IDataResult<PagedList<User>> GetAll(bool status, string sortBy, string sortOrder, int page = 1, int size = 10)
     {
-        var users =  _userRepository.GetAll();
+        var users = _userRepository.GetAll();
         users = users.Where(item => item.Status == status).ToList();
 
         if (users.Count == 0)
@@ -42,23 +43,46 @@ public class UserService : IUserService
             return new ErrorDataResult<PagedList<User>>("No Matching Content");
         }
 
-        if (string.IsNullOrEmpty(sortOrder) || sortOrder.ToLower() == "asc")
+        if (!string.IsNullOrEmpty(sortBy) && typeof(User).GetProperty(sortBy) != null)
         {
-            users = users.OrderBy(item => item.FirstName).ToList();
-        }
-        else if (sortOrder.ToLower() == "desc")
-        {
-            users = users.OrderByDescending(item => item.FirstName).ToList();
+            var parameter = Expression.Parameter(typeof(User), "x");
+            var property = Expression.Property(parameter, sortBy);
+            var lambda = Expression.Lambda<Func<User, object>>(Expression.Convert(property, typeof(object)), parameter);
+
+            if (string.IsNullOrEmpty(sortOrder) || sortOrder.ToLower() == "asc")
+            {
+                users = users.OrderBy(lambda.Compile()).ToList();
+            }
+            else if (sortOrder.ToLower() == "desc")
+            {
+                users = users.OrderByDescending(lambda.Compile()).ToList();
+            }
+            else
+            {
+                users = users.OrderBy(lambda.Compile()).ToList();
+            }
         }
         else
         {
-            users = users.OrderBy(item => item.FirstName).ToList();
+            if (string.IsNullOrEmpty(sortOrder) || sortOrder.ToLower() == "asc")
+            {
+                users = users.OrderBy(item => item.FirstName).ToList();
+            }
+            else if (sortOrder.ToLower() == "desc")
+            {
+                users = users.OrderByDescending(item => item.FirstName).ToList();
+            }
+            else
+            {
+                users = users.OrderBy(item => item.FirstName).ToList();
+            }
         }
 
         var pagedUsers = PagedList<User>.Create(users, page, size);
 
         return new SuccessDataResult<PagedList<User>>(pagedUsers);
     }
+
     public IResult UserExists(string email)
     {
 

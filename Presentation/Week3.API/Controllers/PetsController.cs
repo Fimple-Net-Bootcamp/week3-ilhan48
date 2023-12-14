@@ -21,9 +21,9 @@ public class PetsController : ControllerBase
         return Created("", petAddDto);
     }
     [HttpGet]
-    public async Task<IActionResult> GetAll([FromQuery] string filter, string sortOrder, int page = 1, int size = 10)
+    public async Task<IActionResult> GetAll([FromQuery] string sortBy, string sortOrder, int page = 1, int size = 10)
     {
-        var result = _petService.GetAll(filter, sortOrder, page, size);
+        var result = _petService.GetAll(sortBy, sortOrder, page, size);
         if (result.Success)
         {
             return Ok(result);
