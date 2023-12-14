@@ -8,8 +8,6 @@ public class Activity : BaseEntity<int>
     public string Name { get; set; }
     public string Description { get; set; }
     public string DifficultyLevel { get; set; }
-    public TimeSpan Duration { get; set; }
-    public DateTime Date { get; set; }
     [ForeignKey("PetId")]
     public int PetId { get; set; }
     public virtual Pet Pet { get; set; }
@@ -19,24 +17,18 @@ public class Activity : BaseEntity<int>
         Name = string.Empty;
         Description = string.Empty;
         DifficultyLevel = string.Empty;
-        Duration = TimeSpan.Zero;
-        Date = DateTime.MinValue;
     }
 
     public Activity(
         string name, 
         string description, 
         string difficultyLevel, 
-        TimeSpan duration, 
-        DateTime date, 
         int petId
     )
     {
         Name = name;
         Description = description;
         DifficultyLevel = difficultyLevel;
-        Duration = duration;
-        Date = date;
         PetId = petId;
     }
     public Activity(
@@ -44,8 +36,6 @@ public class Activity : BaseEntity<int>
         string name,
         string description,
         string difficultyLevel,
-        TimeSpan duration,
-        DateTime date,
         int petId
     )
         : base(id)
@@ -53,8 +43,6 @@ public class Activity : BaseEntity<int>
         Name = name;
         Description = description;
         DifficultyLevel = difficultyLevel;
-        Duration = duration;
-        Date = date;
         PetId = petId;
     }
 }

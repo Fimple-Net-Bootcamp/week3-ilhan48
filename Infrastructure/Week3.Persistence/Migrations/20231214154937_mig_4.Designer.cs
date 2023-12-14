@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Week3.Persistence.Context;
@@ -11,9 +12,11 @@ using Week3.Persistence.Context;
 namespace Week3.Persistence.Migrations
 {
     [DbContext(typeof(VirtualPetDbContext))]
-    partial class VirtualPetDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231214154937_mig_4")]
+    partial class mig_4
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -59,37 +62,6 @@ namespace Week3.Persistence.Migrations
                     b.HasIndex("PetId");
 
                     b.ToTable("Activities");
-                });
-
-            modelBuilder.Entity("Week3.Domain.Entities.Food", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<DateTime?>("DeletedDate")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<int>("PetId")
-                        .HasColumnType("integer");
-
-                    b.Property<DateTime?>("UpdatedDate")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("PetId");
-
-                    b.ToTable("Foods");
                 });
 
             modelBuilder.Entity("Week3.Domain.Entities.HealthStatus", b =>
@@ -230,17 +202,6 @@ namespace Week3.Persistence.Migrations
                 {
                     b.HasOne("Week3.Domain.Entities.Pet", "Pet")
                         .WithMany("Activities")
-                        .HasForeignKey("PetId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Pet");
-                });
-
-            modelBuilder.Entity("Week3.Domain.Entities.Food", b =>
-                {
-                    b.HasOne("Week3.Domain.Entities.Pet", "Pet")
-                        .WithMany()
                         .HasForeignKey("PetId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();

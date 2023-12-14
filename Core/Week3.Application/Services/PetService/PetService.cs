@@ -86,18 +86,23 @@ public class PetService : IPetService
         return new SuccessDataResult<Pet>(_petRepository.Get(p => p.Id == id));
     }
 
-    public IResult Update(PetUpdateDto petUpdateDto)
+    public IResult Update(int id, PetUpdateDto petUpdateDto)
     {
-        var petToUpdate = new Pet
-        {
-            Name = petUpdateDto.Name,
-            Type = petUpdateDto.Type,
-            BirthDate = petUpdateDto.BirthDate,
-            Color = petUpdateDto.Color,
-            Gender = petUpdateDto.Gender,
-        };
+        var existingPet = GetById(id).Data;
 
-        _petRepository.Update(petToUpdate);
-        return new SuccessResult();
+        if (existingPet == null)
+        {
+            return new ErrorResult("Pet not found");
+        }
+
+        existingPet.Name = petUpdateDto.Name;
+        existingPet.Type = petUpdateDto.Type;
+        existingPet.BirthDate = petUpdateDto.BirthDate;
+        existingPet.Color = petUpdateDto.Color;
+        existingPet.Gender = petUpdateDto.Gender;
+
+        _petRepository.Update(existingPet);
+
+        return new SuccessResult("Pet updated.");
     }
 }

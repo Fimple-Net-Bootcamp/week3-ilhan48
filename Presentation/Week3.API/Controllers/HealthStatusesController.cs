@@ -10,48 +10,47 @@ namespace Week3.API.Controllers;
 public class HealthStatusesController : ControllerBase
 {
     private readonly IHealthStatusService _healthStatusService;
+
     public HealthStatusesController(IHealthStatusService healthStatusService)
     {
         _healthStatusService = healthStatusService;
     }
+
     [HttpGet]
-    public async Task<IActionResult> GetAll([FromQuery] string sortBy, string sortOrder, int page = 1, int size = 10)
+    public IActionResult GetAll([FromQuery] string sortBy, string sortOrder, int page = 1, int size = 10)
     {
         var result = _healthStatusService.GetAll(sortBy, sortOrder, page, size);
-        if (result.Success)
-        {
-            return Ok(result);
-        }
-        return BadRequest(result);
+
+        return result.Success
+            ? Ok(result)
+            : BadRequest(result);
     }
-    [HttpPatch]
+
+    [HttpPatch("{id}")]
     public IActionResult PatchHealthStatus(int id, [FromBody] JsonPatchDocument<HealthStatusUpdateDto> patchDocument)
     {
         if (patchDocument == null)
         {
-            return BadRequest(ModelState);
+            return BadRequest(new { error = "Invalid JSON patch document." });
         }
 
         var healthStatusFromRepo = _healthStatusService.GetById(id);
         if (healthStatusFromRepo == null)
         {
-            return NotFound();
+            return NotFound(new { error = $"Health status with id {id} not found." });
         }
 
         var healthStatusToPatch = new HealthStatusUpdateDto();
-        patchDocument.ApplyTo(healthStatusToPatch, (Microsoft.AspNetCore.JsonPatch.JsonPatchError err) => ModelState.AddModelError("JsonPatch", err.ErrorMessage));
+        patchDocument.ApplyTo(healthStatusToPatch, ModelState);
 
-        if(!TryValidateModel(healthStatusToPatch))
+        if (!TryValidateModel(healthStatusToPatch))
         {
-            return BadRequest();
+            return BadRequest(ModelState);
         }
 
         var result = _healthStatusService.Update(healthStatusToPatch);
-        if (result.Success)
-        {
-            return Ok(result);
-        }
-        return BadRequest(result);
+        return result.Success
+            ? Ok(result)
+            : BadRequest(result);
     }
-
 }

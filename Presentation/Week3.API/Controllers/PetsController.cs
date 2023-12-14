@@ -8,7 +8,8 @@ namespace Week3.API.Controllers;
 [ApiController]
 public class PetsController : ControllerBase
 {
-    IPetService _petService;
+    private readonly IPetService _petService;
+
     public PetsController(IPetService petService)
     {
         _petService = petService;
@@ -17,17 +18,53 @@ public class PetsController : ControllerBase
     [HttpPost]
     public IActionResult Add(PetAddDto petAddDto)
     {
-        _petService.Add(petAddDto);
-        return Created("", petAddDto);
+        var result = _petService.Add(petAddDto);
+
+        if (result.Success)
+        {
+            return Created("", result);
+        }
+
+        return BadRequest(result);
     }
+
     [HttpGet]
-    public async Task<IActionResult> GetAll([FromQuery] string sortBy, string sortOrder, int page = 1, int size = 10)
+    public IActionResult GetAll([FromQuery] string sortBy, string sortOrder, int page = 1, int size = 10)
     {
         var result = _petService.GetAll(sortBy, sortOrder, page, size);
+
         if (result.Success)
         {
             return Ok(result);
         }
+
+        return NotFound(result);
+    }
+
+    [HttpGet("{id}", Name = nameof(GetById))]
+    public IActionResult GetById(int id)
+    {
+        var result = _petService.GetById(id);
+
+        if (result.Success)
+        {
+            return Ok(result);
+        }
+
+        return NotFound(result);
+    }
+
+    [HttpPut("{id}")]
+    public IActionResult Update(int id, PetUpdateDto petUpdateDto)
+    {
+        var result = _petService.Update(id, petUpdateDto);
+
+        if (result.Success)
+        {
+            return Ok(result);
+        }
+
         return BadRequest(result);
     }
+
 }

@@ -10,6 +10,7 @@ public class VirtualPetDbContext : DbContext
     DbSet<Pet> Pets { get; set; }
     DbSet<Activity> Activities { get; set; }
     DbSet<HealthStatus> HealthStatuses { get; set; }
+    DbSet<Food> Foods { get; set; }
     public VirtualPetDbContext(DbContextOptions dbContextOptions, IConfiguration configuration) : base(dbContextOptions)
     {
         

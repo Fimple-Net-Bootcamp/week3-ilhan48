@@ -1,33 +1,50 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Week3.Application.DTOs;
 using Week3.Application.Services.ActivityService;
-using Week3.Application.Services.Repositories;
 
 namespace Week3.API.Controllers;
 
-[Route("api/[controller]")]
+[Route("api/v1/[controller]")]
 [ApiController]
 public class ActivitiesController : ControllerBase
 {
     private readonly IActivityService _activityService;
+
     public ActivitiesController(IActivityService activityService)
     {
         _activityService = activityService;
     }
+
     [HttpPost]
-    public async Task<IActionResult> Add(ActivityAddDto activityAddDto)
+    public IActionResult Add(ActivityAddDto activityAddDto)
     {
-        _activityService.Add(activityAddDto);
-        return Created("", activityAddDto);
+        var result = _activityService.Add(activityAddDto);
+        if (result.Success)
+        {
+            return Created("", result);
+        }
+        return BadRequest(result);
     }
+
     [HttpGet]
-    public async Task<IActionResult> GetAll([FromQuery] int petId, string sortBy, string sortOrder, int page = 1, int size = 10)
+    public IActionResult GetAll([FromQuery] int petId, string sortBy, string sortOrder, int page = 1, int size = 10)
     {
         var result = _activityService.GetActivties(petId, sortBy, sortOrder, page, size);
         if (result.Success)
         {
-            return Ok(result);
+            return Ok(result.Data);
         }
-        return BadRequest(result);
+        return NotFound(result.Message);
+    }
+
+    [HttpGet("{id}")]
+    public IActionResult GetById(int id)
+    {
+        var result = _activityService.GetById(id);
+        if (result.Success)
+        {
+            return Ok(result.Data);
+        }
+        return NotFound(result.Message);
     }
 }

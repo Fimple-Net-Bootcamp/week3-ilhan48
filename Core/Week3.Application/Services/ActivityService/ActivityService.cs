@@ -19,10 +19,9 @@ public class ActivityService : IActivityService
         var activityToAdd = new Activity
         {
             Name = activityAddDto.Name,
+            PetId = activityAddDto.PetId,
             Description = activityAddDto.Description,
             DifficultyLevel = activityAddDto.DifficultyLevel,
-            Duration = activityAddDto.Duration,
-            Date = activityAddDto.Date,
         };
         _activityRepository.Add(activityToAdd);
         return new SuccessResult();
