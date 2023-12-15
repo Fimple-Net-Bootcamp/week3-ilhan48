@@ -22,37 +22,36 @@ Entity Framework, veritabanı etkileşimlerini basitleştiren ve nesne ilişkise
 
 Projemiz, Onion Architecture prensiplerine göre tasarlanmıştır. 
 
-Common/\n
-├── Common.Persistence/ \n
-│   └── Repositories\n
-└── Common.Utilities/\n
-    ├── Hashing\n
-    ├── Paging\n
-    └── Results\n
+Common/
+├── Common.Persistence/ 
+│   └── Repositories
+└── Common.Utilities/
+    ├── Hashing
+    ├── Paging
+    └── Results
 Core/\n
-├── Week3.Application/\n
-│   ├── DTOs\n
-│   └── Services/\n
-│       ├── ActivityService\n
-│       ├── FoodService\n
-│       ├── HealthService\n
-│       ├── PetService\n
-│       ├── Repositories\n
-│       ├── UserService\n
-│       └── ApplicationServiceRegistration.cs\n
-├── Week3.Domain/\n
-│   └── Entities\n
-├── Infrastructure\n
-├── Week3.Infrastructure\n
-├── Week3.Persistence/\n
-│   ├── Context\n
-│   ├── Migrations\n
-│   ├── Repositories\n
-│   └── PersistenceServiceRegistration.cs\n
-├── Presentation\n
-└── Week3.API/\n
-    ├── Controllers\n
-    └── Program.cs\n
+├── Week3.Application/
+│   ├── DTOs
+│   └── Services/
+│       ├── ActivityService
+│       ├── FoodService
+│       ├── HealthService
+│       ├── PetService
+│       ├── Repositories
+│       ├── UserService
+│       └── ApplicationServiceRegistration.cs
+├── Week3.Domain/
+│   └── Entities
+├── Infrastructure
+├── Week3.Infrastructure
+├── Week3.Persistence/
+│   ├── Context
+│   ├── Migrations
+│   ├── Repositories
+│   └── PersistenceServiceRegistration.cs
+├── Presentation
+└── Week3.API/
+    └── Program.cs
 
 ## Kurulum
 
