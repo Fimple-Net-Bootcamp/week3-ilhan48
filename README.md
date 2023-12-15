@@ -22,36 +22,7 @@ Entity Framework, veritabanı etkileşimlerini basitleştiren ve nesne ilişkise
 
 Projemiz, Onion Architecture prensiplerine göre tasarlanmıştır. 
 
-Common/
-├── Common.Persistence/ 
-│   └── Repositories
-└── Common.Utilities/
-    ├── Hashing
-    ├── Paging
-    └── Results
-Core/\n
-├── Week3.Application/
-│   ├── DTOs
-│   └── Services/
-│       ├── ActivityService
-│       ├── FoodService
-│       ├── HealthService
-│       ├── PetService
-│       ├── Repositories
-│       ├── UserService
-│       └── ApplicationServiceRegistration.cs
-├── Week3.Domain/
-│   └── Entities
-├── Infrastructure
-├── Week3.Infrastructure
-├── Week3.Persistence/
-│   ├── Context
-│   ├── Migrations
-│   ├── Repositories
-│   └── PersistenceServiceRegistration.cs
-├── Presentation
-└── Week3.API/
-    └── Program.cs
+![folderStructure](https://github.com/Fimple-Net-Bootcamp/week3-ilhan48/blob/main/Assets/folderStructure.png)
 
 ## Kurulum
 
